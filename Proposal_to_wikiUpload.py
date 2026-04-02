@@ -11,6 +11,11 @@ import re    # 문장 정렬을 위한 정규표현식 추가
 import pythoncom
 from pptx import Presentation
 
+#주요기능
+#엑셀, 한글, PDF, PPT 파일을 텍스트로 변환해서 위키에 자동으로 업로드하는 기능
+#위키 접속정보는 key 파일을 통해 유연하게 계정별로 사용가능
+#위키 분류도 key 파일을 통해 변경가능
+
 # SSL 인증서 경고 무시 (사내 위키 접속용)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
