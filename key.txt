@@ -1,0 +1,7 @@
+{
+    "SITE_URL": "pms.utinfo.co.kr",
+    "PATH": "/mediawiki/",
+    "USERNAME": "Siy@siy",
+    "PASSWORD": "9m9nso6pkfcurru6kqimpomb6pvfpn51",
+    "CATEGORY_NAME": "경쟁사제안서"
+}
