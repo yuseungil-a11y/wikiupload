@@ -47,11 +47,31 @@ def load_config():
 # 전역 설정 로드
 WIKI_CONFIG = load_config()
 
+def get_base_path():
+        if getattr(sys, 'frozen', False):
+        # exe 파일로 빌드된 경우
+            return os.path.dirname(sys.executable)
+        else:
+        # 일반 파이썬 스크립트로 실행되는 경우
+            return os.path.dirname(os.path.abspath(__file__))
+        base_path = get_base_path()
+
+        proc = IntegratedAutomation(current)
 class IntegratedAutomation:
-    def __init__(self, folder_path):
-        self.folder_path = os.path.abspath(folder_path)
-        pythoncom.CoInitialize() # COM 객체 안정화
-        print(f"📂 작업 경로: {self.folder_path}\n")
+
+    
+
+    def __init__(self, base_path):
+        self.folder_path = base_path
+
+        print(f"📂 작업 경로: {self.folder_path}")
+
+
+
+    #def __init__(self, folder_path):
+        #self.folder_path = os.path.abspath(folder_path)
+        #pythoncom.CoInitialize() # COM 객체 안정화
+        #print(f"📂 작업 경로: {self.folder_path}\n")
 
     # 1. 엑셀 -> PDF
     def task_excel(self):
@@ -78,7 +98,7 @@ class IntegratedAutomation:
         files = [f for f in os.listdir(self.folder_path) if f.lower().endswith((".hwpx", ".hwp"))]
         if not files: return
         hwp = None
-        try:
+        try:       
             hwp = win32com.client.gencache.EnsureDispatch("HWPFrame.HwpObject")
             hwp.RegisterModule("FilePathCheckDLL", "AutomationModule")
             for f in files:
@@ -199,7 +219,19 @@ class IntegratedAutomation:
             print(f"❌ 위키 접속/로그인 오류: {e}")
 
 if __name__ == "__main__":
-    current = os.path.dirname(os.path.abspath(__file__))
+# 수정 전: current = os.path.dirname(os.path.abspath(__file__))
+    
+    # 수정 후: 빌드 여부에 따라 실제 경로를 잡도록 변경
+    if getattr(sys, 'frozen', False):
+        # .exe로 실행 중일 때 (.exe 파일이 있는 폴더)
+        current = os.path.dirname(os.path.abspath(sys.executable))
+    else:
+        # .py로 실행 중일 때 (스크립트 파일이 있는 폴더)
+        current = os.path.dirname(os.path.abspath(__file__))
+    
+    # 확인용 출력 (빌드 후 실행했을 때 Temp가 아닌 실제 폴더가 나와야 함)
+    print(f"📍 현재 인식된 작업 경로: {current}")
+    
     proc = IntegratedAutomation(current)
     
     # 전체 프로세스 순차 실행
